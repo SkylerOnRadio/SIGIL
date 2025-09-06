@@ -54,3 +54,8 @@ In base directory
 ```bash
 docker-compose up --build
 ```
+
+## Members
+
+Vaibhav
+Abhigya

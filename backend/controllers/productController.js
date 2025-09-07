@@ -5,31 +5,38 @@ export const getProducts = async (req, res) => {
 	try {
 		const { search, category, minPrice, maxPrice } = req.query;
 
+		// Base query
 		let query = 'SELECT * FROM products';
-		let values = [];
+		const values = [];
 
-		if (search) {
-			query += ' AND (title LIKE ? OR description LIKE ?)';
-			values.push(`%${search}%`, `%${search}%`);
+		// Conditional filters
+		const conditions = [];
+		if (search) conditions.push('(title LIKE ? OR description LIKE ?)');
+		if (category) conditions.push('category = ?');
+		if (minPrice) conditions.push('price >= ?');
+		if (maxPrice) conditions.push('price <= ?');
+
+		if (conditions.length > 0) {
+			query += ' WHERE ' + conditions.join(' AND ');
+			if (search) values.push(`%${search}%`, `%${search}%`);
+			if (category) values.push(category);
+			if (minPrice) values.push(minPrice);
+			if (maxPrice) values.push(maxPrice);
 		}
 
-		if (category) {
-			query += ' AND category = ?';
-			values.push(category);
+		// Fetch products
+		const [products] = await db.query(query, values);
+
+		// Fetch images for each product
+		for (let product of products) {
+			const [images] = await db.query(
+				'SELECT images FROM product_images WHERE productId = ?',
+				[product.id]
+			);
+			product.images = images.map((img) => img.images); // array of URLs
 		}
 
-		if (minPrice) {
-			query += ' AND price >= ?';
-			values.push(minPrice);
-		}
-
-		if (maxPrice) {
-			query += ' AND price <= ?';
-			values.push(maxPrice);
-		}
-
-		const [rows] = await db.query(query, values);
-		res.json(rows);
+		res.json(products);
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ message: err.message });
@@ -41,18 +48,33 @@ export const createProduct = async (req, res) => {
 	try {
 		const { title, description, price, category } = req.body;
 
-		if (!title || !price || !category) {
+		if (!title || !price || !category || !description) {
 			return res.status(400).json({ message: 'Missing required fields' });
 		}
 
 		const [result] = await db.query(
 			'INSERT INTO products (title, description, price, category, userId) VALUES (?, ?, ?, ?, ?)',
-			[title, description, price, category, req.user.id] // req.user comes from auth middleware
+			[title, description, price, category, req.user.id]
 		);
+
+		const productId = result.insertId;
+
+		if (req.files && req.files.length > 0) {
+			// Use correct column name here
+			const imageQueries = req.files.map((file) => [
+				productId,
+				`/uploads/${file.filename}`,
+			]);
+
+			await db.query(
+				'INSERT INTO product_images (productId, imageUrl) VALUES ?',
+				[imageQueries]
+			);
+		}
 
 		res
 			.status(201)
-			.json({ id: result.insertId, title, description, price, category });
+			.json({ id: productId, title, description, price, category });
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ message: err.message });

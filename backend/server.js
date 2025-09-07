@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 
@@ -14,6 +15,8 @@ app.use(express.urlencoded());
 
 app.use('/user', userRoutes);
 app.use('/products', productRoutes);
+
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.listen(PORT, () => {
 	console.log(`Server has started on port ${PORT}`);

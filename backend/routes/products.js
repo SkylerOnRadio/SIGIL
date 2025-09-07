@@ -1,4 +1,6 @@
 import express from 'express';
+
+import { upload } from '../middleware/multer.js';
 import {
 	getProducts,
 	createProduct,
@@ -12,7 +14,7 @@ const router = express.Router();
 router.get('/', getProducts);
 
 // Private: add product
-router.post('/', protect, createProduct);
+router.post('/', protect, upload.array('images', 5), createProduct);
 
 // Private: delete product (only owner)
 router.delete('/:id', protect, deleteProduct);

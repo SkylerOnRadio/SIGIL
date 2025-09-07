@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -31,9 +31,11 @@ export default function Register() {
 		const { confirmPassword, ...userData } = formData;
 
 		dispatch(register(userData));
-
-		if (isSuccess) navigate('/');
 	};
+
+	useEffect(() => {
+		if (isSuccess && user) navigate('/');
+	}, [user, isSuccess, navigate]);
 
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-blue-100 dark:from-gray-800 dark:to-gray-900 px-4">

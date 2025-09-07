@@ -10,4 +10,10 @@ export default defineConfig({
 			external: ['@reduxjs/toolkit', 'react-redux'],
 		},
 	},
+	server: {
+		port: 3000,
+		proxy: {
+			'/api': 'http://localhost:5000',
+		},
+	},
 });

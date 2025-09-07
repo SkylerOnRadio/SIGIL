@@ -1,19 +1,14 @@
 import axios from 'axios';
 
-const API = axios.create({
-	baseURL: 'http://localhost:5000',
-	withCredentials: true,
-});
-
 const register = async (userData) => {
-	const res = await API.post('/user/register', userData);
+	const res = await axios.post('/api/user/register', userData);
 
 	if (res.data) localStorage.setItem('user', JSON.stringify(res.data));
 	return res.data;
 };
 
 const login = async (userData) => {
-	const res = await API.post('/user/login', userData);
+	const res = await API.post('/api/user/login', userData);
 
 	if (res.data) localStorage.setItem('user', JSON.stringify(res.data));
 	return res.data;
@@ -21,7 +16,7 @@ const login = async (userData) => {
 
 const logout = async () => {
 	localStorage.removeItem('user');
-	const res = await API.get('/user/logout');
+	const res = await API.get('/api/user/logout');
 	return res.data;
 };
 

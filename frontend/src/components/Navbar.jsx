@@ -4,6 +4,7 @@ import {
 	IoMoonOutline,
 } from 'react-icons/io5';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
 	const [darkMode, setDarkMode] = useState(false);
@@ -33,41 +34,42 @@ const Navbar = () => {
 					<Logo />
 				</a>
 				<nav className="hidden md:flex items-center space-x-6">
-					<a
-						href="#"
+					<Link
+						to="/"
 						className="text-gray-700 dark:text-gray-300 font-medium relative overflow-hidden group py-2"
 					>
 						<span className="relative z-10 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
 							Home
 						</span>
 						<span className="absolute left-0 bottom-0 w-full h-0.5 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-					</a>
-					<a
-						href="#"
+					</Link>
+					<Link
+						href="/PostAd"
 						className="text-gray-700 dark:text-gray-300 font-medium relative overflow-hidden group py-2"
 					>
 						<span className="relative z-10 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
 							Post an Ad
 						</span>
 						<span className="absolute left-0 bottom-0 w-full h-0.5 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-					</a>
-					<a
-						href="#"
+					</Link>
+					<Link
+						to="Dashboard"
 						className="text-gray-700 dark:text-gray-300 font-medium relative overflow-hidden group py-2"
 					>
 						<span className="relative z-10 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
 							Dashboard
 						</span>
 						<span className="absolute left-0 bottom-0 w-full h-0.5 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-					</a>
+					</Link>
 				</nav>
 				<div className="flex items-center space-x-4">
-					<button
+					<Link
+						to="/ChatPage"
 						className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transform hover:scale-110"
 						aria-label="Chat"
 					>
 						<IoChatbubbleOutline className="w-6 h-6" />
-					</button>
+					</Link>
 					<button
 						className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transform hover:scale-110"
 						aria-label="Notifications"
@@ -85,12 +87,12 @@ const Navbar = () => {
 							<IoMoonOutline className="w-6 h-6" />
 						)}
 					</button>
-					<a
-						href="#"
+					<Link
+						to="/login"
 						className="hidden md:block px-6 py-2 rounded-full bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 transition-colors duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
 					>
 						Login
-					</a>
+					</Link>
 					<button className="md:hidden p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"

@@ -14,9 +14,9 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.use('/user', userRoutes);
-app.use('/products', productRoutes);
-app.use('/dashboard', dashboardRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 

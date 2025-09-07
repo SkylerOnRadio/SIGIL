@@ -6,10 +6,17 @@ import {
 } from 'react-router-dom';
 
 import ProductPage from './Pages/ProductPage';
+import MainLayout from '../Layouts/MainLayout';
+import Register from './Pages/RegisterPage';
 
 const App = () => {
 	const router = createBrowserRouter(
-		createRoutesFromElements(<Route path="/" element={<ProductPage />} />)
+		createRoutesFromElements(
+			<Route path="/" element={<MainLayout />}>
+				<Route path="/" element={<ProductPage />} />
+				<Route path="register" element={<Register />} />
+			</Route>
+		)
 	);
 
 	return <RouterProvider router={router} />;

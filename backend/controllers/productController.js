@@ -67,7 +67,7 @@ export const createProduct = async (req, res) => {
 			]);
 
 			await db.query(
-				'INSERT INTO product_images (productId, imageUrl) VALUES ?',
+				'INSERT INTO product_images (productId, images) VALUES ?',
 				[imageQueries]
 			);
 		}

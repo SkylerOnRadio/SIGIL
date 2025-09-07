@@ -30,7 +30,6 @@ export const registerUser = async (req, res) => {
 		res.status(201).json({
 			id: result.insertId,
 			username,
-			email,
 		});
 	} catch (err) {
 		console.error(err);
@@ -58,8 +57,7 @@ export const loginUser = async (req, res) => {
 
 		res.json({
 			id: user.id,
-			name: user.name,
-			email: user.email,
+			username: user.username,
 		});
 	} catch (err) {
 		res.status(500).json({ message: err.message });
@@ -68,6 +66,9 @@ export const loginUser = async (req, res) => {
 
 // LOGOUT
 export const logoutUser = (req, res) => {
-	// With JWT, logout is client-side (remove token)
+	res.cookie('jwt', '', {
+		httpOnly: true,
+		expires: new Date(0),
+	});
 	res.json({ message: 'Logged out successfully' });
 };

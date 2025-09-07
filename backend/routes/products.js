@@ -1,16 +1,20 @@
-import express from "express";
-import { getProducts, createProduct, deleteProduct } from "../controllers/productController.js";
-import auth from "../middleware/auth.js"; // JWT middleware
+import express from 'express';
+import {
+	getProducts,
+	createProduct,
+	deleteProduct,
+} from '../controllers/productController.js';
+import { protect } from '../middleware/auth.js';
 
 const router = express.Router();
 
 // Public: search/filter products
-router.get("/", getProducts);
+router.get('/', getProducts);
 
 // Private: add product
-router.post("/", auth, createProduct);
+router.post('/', protect, createProduct);
 
 // Private: delete product (only owner)
-router.delete("/:id", auth, deleteProduct);
+router.delete('/:id', protect, deleteProduct);
 
 export default router;

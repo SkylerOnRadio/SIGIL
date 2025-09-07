@@ -6,14 +6,14 @@ const API = axios.create({
 });
 
 const register = async (userData) => {
-	const res = await API.post('/users/register', userData);
+	const res = await API.post('/user/register', userData);
 
 	if (res.data) localStorage.setItem('user', JSON.stringify(res.data));
 	return res.data;
 };
 
 const login = async (userData) => {
-	const res = await API.post('/users/login', userData);
+	const res = await API.post('/user/login', userData);
 
 	if (res.data) localStorage.setItem('user', JSON.stringify(res.data));
 	return res.data;
@@ -21,7 +21,7 @@ const login = async (userData) => {
 
 const logout = async () => {
 	localStorage.removeItem('user');
-	const res = await API.get('/users/logout');
+	const res = await API.get('/user/logout');
 	return res.data;
 };
 

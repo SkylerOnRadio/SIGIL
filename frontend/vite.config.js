@@ -5,4 +5,9 @@ import tailwind from '@tailwindcss/vite';
 
 export default defineConfig({
 	plugins: [react(), tailwind()],
+	build: {
+		rollupOptions: {
+			external: ['@reduxjs/toolkit', 'react-redux'],
+		},
+	},
 });

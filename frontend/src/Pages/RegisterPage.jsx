@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
 import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { register } from '../features/auth/authSlice';
 
 export default function Register() {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const { user, isSuccess, isLoading, isError, message } = useSelector(
+		(state) => state.auth
+	);
+
 	const [showPassword, setShowPassword] = useState(false);
 	const [formData, setFormData] = useState({
 		username: '',
@@ -17,9 +26,13 @@ export default function Register() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		// You can handle registration logic here
-		console.log('Register Data:', formData);
-		alert('Registration submitted!');
+
+		// Destructure confirmPassword out, send only the rest
+		const { confirmPassword, ...userData } = formData;
+
+		dispatch(register(userData));
+
+		if (isSuccess) navigate('/');
 	};
 
 	return (

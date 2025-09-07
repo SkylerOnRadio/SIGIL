@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 @layer base {
 	body {
@@ -8,7 +6,7 @@
 	}
 }
 @layer utilities {
-  .glass {
-    @apply backdrop-blur-xl bg-white/70 dark:bg-gray-900/70 border border-white/20;
-  }
+	.glass {
+		@apply backdrop-blur-xl bg-white/70 dark:bg-gray-900/70 border border-white/20;
+	}
 }

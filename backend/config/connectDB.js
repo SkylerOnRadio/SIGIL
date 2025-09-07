@@ -1,4 +1,4 @@
-import mysql from 'mysql2';
+import mysql from 'mysql2/promise';
 
 const HOST = process.env.HOST || "crossover.proxy.rlwy.net";
 const USER = process.env.USER || root;

@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 
 import userRoutes from './routes/users.js';
 import productRoutes from './routes/products.js';
+import dashboardRoutes from './routes/dashboard.js';
 
 const PORT = process.env.PORT || 5000;
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded());
 
 app.use('/user', userRoutes);
 app.use('/products', productRoutes);
+app.use('/dashboard', dashboardRoutes);
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 

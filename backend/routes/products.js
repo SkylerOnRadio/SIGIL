@@ -1,20 +1,11 @@
-import express from 'express';
-import {
-	getProducts,
-	createProduct,
-	deleteProduct,
-} from '../controllers/productController.js';
-import { protect } from '../middleware/auth.js';
+import express from "express";
+import { getProducts, createProduct, deleteProduct } from "../controllers/productController.js";
+import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
-// Public: search/filter products
-router.get('/', getProducts);
-
-// Private: add product
-router.post('/', protect, createProduct);
-
-// Private: delete product (only owner)
-router.delete('/:id', protect, deleteProduct);
+router.get("/", getProducts);
+router.post("/", auth, createProduct);
+router.delete("/:id", auth, deleteProduct);
 
 export default router;

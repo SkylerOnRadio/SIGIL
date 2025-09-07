@@ -1,74 +1,145 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import db from '../config/connectDB.js';
-import generateToken from '../utils/generateToken.js';
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 
-// REGISTER
+// In-memory storage for mock users and OTPs
+let mockUsers = [];
+let otpStore = {};
+
+// -------------------------------
+// Register a new user
+// -------------------------------
 export const registerUser = async (req, res) => {
-	try {
-		const { username, email, password } = req.body;
+  const { username, email, password } = req.body || {};
 
-		// check if user exists
-		const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [
-			email,
-		]);
-		if (rows.length > 0)
-			return res.status(400).json({ message: 'User already exists' });
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: "❌ All fields are required" });
+  }
 
-		// hash password
-		const salt = await bcrypt.genSalt(10);
-		const hashedPassword = await bcrypt.hash(password, salt);
+  // Only allow SMIT emails
+  if (!email.endsWith("@smit.edu")) {
+    return res.status(400).json({ message: "❌ Only SMIT email addresses allowed" });
+  }
 
-		// insert into db
-		const [result] = await db.query(
-			'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-			[username, email, hashedPassword]
-		);
+  const existing = mockUsers.find((user) => user.email === email);
+  if (existing) {
+    return res.status(400).json({ message: "❌ Email already registered" });
+  }
 
-		generateToken(res, result.insertId, username);
+  // Hash password
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-		res.status(201).json({
-			id: result.insertId,
-			username,
-		});
-	} catch (err) {
-		console.error(err);
-		res.status(500).json({ message: err.message });
-	}
+  mockUsers.push({
+    id: mockUsers.length + 1,
+    username,
+    email,
+    password: hashedPassword,
+    verified: false
+  });
+
+  res.status(201).json({ message: "✅ User registered successfully. Please verify your SMIT email." });
 };
 
-// LOGIN
+// -------------------------------
+// Send OTP
+// -------------------------------
+export const sendOTP = async (req, res) => {
+  const { email } = req.body || {};
+
+  if (!email) return res.status(400).json({ message: "❌ Email is required" });
+
+  const user = mockUsers.find((u) => u.email === email);
+  if (!user) return res.status(404).json({ message: "❌ User not found" });
+
+  if (!email.endsWith("@smit.edu")) {
+    return res.status(400).json({ message: "❌ Only SMIT emails can receive OTP" });
+  }
+
+  // Generate 6-digit OTP
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  otpStore[email] = otp;
+
+  try {
+    // Send OTP email via nodemailer
+    const transporter = nodemailer.createTransport({
+      service: "gmail", // Replace with your email service if needed
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Campus Marketplace OTP Verification",
+      text: `Your OTP is: ${otp}`
+    });
+
+    res.json({ message: "✅ OTP sent to your SMIT email" });
+  } catch (err) {
+    // fallback: return OTP in response for testing
+    console.log("⚠️ Failed sending email, returning OTP for testing:", otp);
+    res.json({ message: "✅ OTP generated (mock)", otp });
+  }
+};
+
+// -------------------------------
+// Verify OTP
+// -------------------------------
+export const verifyOTP = (req, res) => {
+  const { email, otp } = req.body || {};
+
+  if (!email || !otp) return res.status(400).json({ message: "❌ Email and OTP required" });
+
+  const user = mockUsers.find((u) => u.email === email);
+  if (!user) return res.status(404).json({ message: "❌ User not found" });
+
+  if (!email.endsWith("@smit.edu")) {
+    return res.status(400).json({ message: "❌ Only SMIT emails can verify OTP" });
+  }
+
+  if (otpStore[email] && otpStore[email] === otp) {
+    user.verified = true;
+    delete otpStore[email];
+    return res.json({ message: "✅ OTP verified successfully. You can now log in." });
+  }
+
+  res.status(400).json({ message: "❌ Invalid or expired OTP" });
+};
+
+// -------------------------------
+// Login User
+// -------------------------------
 export const loginUser = async (req, res) => {
-	try {
-		const { email, password } = req.body;
+  const { email, password } = req.body || {};
 
-		const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [
-			email,
-		]);
-		if (rows.length === 0)
-			return res.status(400).json({ message: 'Invalid credentials' });
+  if (!email || !password) return res.status(400).json({ message: "❌ Email and password required" });
 
-		const user = rows[0];
-		const isMatch = await bcrypt.compare(password, user.password);
-		if (!isMatch)
-			return res.status(400).json({ message: 'Invalid credentials' });
+  const user = mockUsers.find((u) => u.email === email);
+  if (!user) return res.status(401).json({ message: "❌ Invalid credentials" });
 
-		generateToken(res, user.id, user.username);
+  if (!user.verified) {
+    return res.status(403).json({ message: "❌ Email not verified. Please verify your SMIT email first." });
+  }
 
-		res.json({
-			id: user.id,
-			username: user.username,
-		});
-	} catch (err) {
-		res.status(500).json({ message: err.message });
-	}
+  const match = await bcrypt.compare(password, user.password);
+  if (!match) return res.status(401).json({ message: "❌ Invalid credentials" });
+
+  const token = jwt.sign(
+    { id: user.id, username: user.username },
+    process.env.JWT_SECRET || "temporary_jwt_secret",
+    { expiresIn: "1d" }
+  );
+
+  res.cookie("jwt", token, { httpOnly: true, secure: false });
+  res.json({ message: "✅ Login successful" });
 };
 
-// LOGOUT
+// -------------------------------
+// Logout User
+// -------------------------------
 export const logoutUser = (req, res) => {
-	res.cookie('jwt', '', {
-		httpOnly: true,
-		expires: new Date(0),
-	});
-	res.json({ message: 'Logged out successfully' });
+  res.clearCookie("jwt");
+  res.json({ message: "✅ Logged out successfully" });
 };

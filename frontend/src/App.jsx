@@ -4,9 +4,8 @@ import {
 	Route,
 	RouterProvider,
 } from 'react-router-dom';
-
+import MainLayout from './Layouts/MainLayout';
 import ProductPage from './Pages/ProductPage';
-import MainLayout from '../Layouts/MainLayout';
 import Register from './Pages/RegisterPage';
 
 const App = () => {

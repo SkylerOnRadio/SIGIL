@@ -1,9 +1,9 @@
 import mysql from 'mysql2';
 
-const HOST = process.env.HOST;
-const USER = process.env.USER;
-const PASS = process.env.PASS;
-const DB = process.env.DB;
+const HOST = process.env.HOST || "crossover.proxy.rlwy.net";
+const USER = process.env.USER || root;
+const PASS = process.env.PASS || zPKOLUGlkUitKlSCxuDJZvSyzSCecw;
+const DB = process.env.DB || railway;
 
 export const db = mysql.createPool({
 	host: HOST,

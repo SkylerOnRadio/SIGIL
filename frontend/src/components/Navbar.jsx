@@ -5,9 +5,18 @@ import {
 } from 'react-icons/io5';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../features/auth/authSlice';
 
 const Navbar = () => {
+	const { user } = useSelector((state) => state.auth);
+	const dispatch = useDispatch();
 	const [darkMode, setDarkMode] = useState(false);
+
+	const logoutFn = (e) => {
+		e.preventdefault;
+		dispatch(logout());
+	};
 
 	useEffect(() => {
 		if (darkMode) {
@@ -87,12 +96,22 @@ const Navbar = () => {
 							<IoMoonOutline className="w-6 h-6" />
 						)}
 					</button>
-					<Link
-						to="/login"
-						className="hidden md:block px-6 py-2 rounded-full bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 transition-colors duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
-					>
-						Login
-					</Link>
+					{user ? (
+						<button
+							onClick={logoutFn}
+							className="hidden md:block px-6 py-2 rounded-full bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 transition-colors duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+						>
+							Logout
+						</button>
+					) : (
+						<Link
+							to="/login"
+							className="hidden md:block px-6 py-2 rounded-full bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 transition-colors duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+						>
+							Login
+						</Link>
+					)}
+
 					<button className="md:hidden p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"

@@ -9,7 +9,7 @@ export default defineConfig({
 	server: {
 		port: 3000,
 		proxy: {
-			'/api': `${process.env.VITE_BACKEND}`,
+			'/api': 'http://localhost:5000',
 		},
 	},
 });

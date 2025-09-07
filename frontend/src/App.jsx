@@ -10,6 +10,7 @@ import {
   IoSearch,
   IoChatbubbleOutline,
   IoNotificationsOutline,
+  IoAddCircleOutline,
 } from "react-icons/io5";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 
@@ -133,16 +134,18 @@ function App() {
   });
 
   const Logo = () => (
-    <div className="flex items-center space-x-0 transition-transform duration-300 transform hover:scale-105">
-      <span className="text-3xl font-extrabold text-yellow-500">SM</span>
-      <span className="text-3xl font-extrabold text-gray-800 dark:text-gray-100">
+    <div className="flex items-center space-x-0 cursor-pointer transition-transform duration-300 transform hover:scale-105">
+      <span className="text-3xl sm:text-4xl font-extrabold text-yellow-500">
+        SM
+      </span>
+      <span className="text-3xl sm:text-4xl font-extrabold text-gray-800 dark:text-gray-100">
         kate
       </span>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-50 transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-50 transition-colors duration-300">
       {/* Header */}
       <header className="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
@@ -152,45 +155,48 @@ function App() {
           <nav className="hidden md:flex items-center space-x-6">
             <a
               href="#"
-              className="text-gray-700 dark:text-gray-300 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+              className="text-gray-700 dark:text-gray-300 font-medium relative overflow-hidden group py-2"
             >
-              Home
+              <span className="relative z-10 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
+                Home
+              </span>
+              <span className="absolute left-0 bottom-0 w-full h-0.5 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
             </a>
             <a
               href="#"
-              className="text-gray-700 dark:text-gray-300 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+              className="text-gray-700 dark:text-gray-300 font-medium relative overflow-hidden group py-2"
             >
-              Post an Ad
+              <span className="relative z-10 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
+                Post an Ad
+              </span>
+              <span className="absolute left-0 bottom-0 w-full h-0.5 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
             </a>
             <a
               href="#"
-              className="text-gray-700 dark:text-gray-300 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+              className="text-gray-700 dark:text-gray-300 font-medium relative overflow-hidden group py-2"
             >
-              Dashboard
-            </a>
-            <a
-              href="#"
-              className="text-gray-700 dark:text-gray-300 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
-            >
-              Login
+              <span className="relative z-10 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
+                Dashboard
+              </span>
+              <span className="absolute left-0 bottom-0 w-full h-0.5 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
             </a>
           </nav>
           <div className="flex items-center space-x-4">
             <button
-              className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 focus:outline-none"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transform hover:scale-110"
               aria-label="Chat"
             >
               <IoChatbubbleOutline className="w-6 h-6" />
             </button>
             <button
-              className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 focus:outline-none"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transform hover:scale-110"
               aria-label="Notifications"
             >
               <IoNotificationsOutline className="w-6 h-6" />
             </button>
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 focus:outline-none"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transform hover:scale-110"
               aria-label="Toggle dark mode"
             >
               {darkMode ? (
@@ -199,6 +205,12 @@ function App() {
                 <IoMoonOutline className="w-6 h-6" />
               )}
             </button>
+            <a
+              href="#"
+              className="hidden md:block px-6 py-2 rounded-full bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 transition-colors duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Login
+            </a>
             <button className="md:hidden p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -220,36 +232,51 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Hero & Search - Modernized */}
-        <div className="text-center py-20 bg-gradient-to-br from-blue-500 to-purple-600 dark:from-gray-700 dark:to-gray-900 rounded-3xl shadow-2xl mb-12 transform hover:scale-105 transition-all duration-500">
-          <h1 className="text-4xl sm:text-6xl font-extrabold text-white mb-4 drop-shadow-lg">
-            Find Your Next Gem
-          </h1>
-          <p className="text-lg text-blue-200 dark:text-gray-400 mb-8 max-w-2xl mx-auto font-light">
-            Explore a world of second-hand goods from fellow SMIT students.
-          </p>
-          <div className="relative max-w-xl mx-auto">
-            <IoSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search for books, electronics, and more..."
-              className="w-full pl-12 pr-4 py-3 rounded-full border border-transparent bg-white bg-opacity-90 dark:bg-gray-800 dark:bg-opacity-80 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-300 focus:outline-none transition-all duration-300 shadow-inner"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Hero & Search */}
+        <div className="relative text-center py-24 bg-gradient-to-br from-blue-700 to-indigo-800 dark:from-gray-800 dark:to-gray-900 rounded-3xl shadow-2xl overflow-hidden mb-16 transform hover:scale-[1.01] transition-all duration-500">
+          <div className="absolute inset-0 bg-dot-pattern opacity-10"></div>
+          <div className="relative z-10">
+            <h1 className="text-5xl sm:text-6xl font-extrabold text-white mb-4 drop-shadow-xl">
+              Find Your Next Treasure
+            </h1>
+            <p className="text-lg text-blue-200 dark:text-gray-400 mb-8 max-w-2xl mx-auto font-light">
+              Discover quality second-hand goods from fellow SMIT students,
+              curated for your campus community.
+            </p>
+            <div className="relative max-w-xl mx-auto">
+              <IoSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-blue-300" />
+              <input
+                type="text"
+                placeholder="Search for books, electronics, and more..."
+                className="w-full pl-12 pr-4 py-4 rounded-full border border-transparent bg-white bg-opacity-90 dark:bg-gray-700 dark:text-white focus:ring-4 focus:ring-blue-300 focus:outline-none transition-all duration-300 shadow-xl"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
           </div>
         </div>
+        <style>
+          {`
+          .bg-dot-pattern {
+            background-image: radial-gradient(#ffffff 2px, transparent 2px);
+            background-size: 20px 20px;
+          }
+          .dark .bg-dot-pattern {
+            background-image: radial-gradient(#4b5563 2px, transparent 2px);
+          }
+        `}
+        </style>
 
-        {/* Categories Section - Modernized */}
+        {/* Categories Section */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6">
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6 border-l-4 border-blue-600 pl-4">
             Browse by Category
           </h2>
           <div className="flex flex-wrap gap-4 justify-center sm:justify-start">
             <button
               onClick={() => setActiveCategory("All")}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
+              className={`flex items-center space-x-2 px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl ${
                 activeCategory === "All"
                   ? "bg-blue-600 text-white shadow-xl"
                   : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -261,7 +288,7 @@ function App() {
               <button
                 key={index}
                 onClick={() => setActiveCategory(category.name)}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
+                className={`flex items-center space-x-2 px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl ${
                   activeCategory === category.name
                     ? "bg-blue-600 text-white shadow-xl"
                     : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -274,9 +301,9 @@ function App() {
           </div>
         </section>
 
-        {/* Product Grid - Modernized */}
+        {/* Product Grid */}
         <section>
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6">
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6 border-l-4 border-blue-600 pl-4">
             Latest Listings
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -292,18 +319,27 @@ function App() {
                       alt={product.name}
                       className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+                    <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <div className="flex justify-between items-end">
+                        <div className="flex-1">
+                          <h3 className="font-bold text-xl drop-shadow">
+                            {product.name}
+                          </h3>
+                          <p className="text-xl font-extrabold text-green-400 drop-shadow mt-1">
+                            ₹{product.price.toLocaleString()}
+                          </p>
+                        </div>
+                        <button className="bg-blue-600 p-3 rounded-full shadow-lg transform hover:scale-110 transition-transform duration-300">
+                          <IoAddCircleOutline className="w-6 h-6" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   <div className="p-5">
-                    <h3 className="font-bold text-xl text-gray-900 dark:text-gray-100 truncate mb-1">
-                      {product.name}
-                    </h3>
-                    <p className="text-blue-600 dark:text-blue-400 font-extrabold text-2xl">
-                      ₹{product.price.toLocaleString()}
-                    </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
                       Category:{" "}
-                      <span className="font-medium text-gray-700 dark:text-gray-300">
+                      <span className="font-semibold text-blue-600 dark:text-blue-400">
                         {product.category}
                       </span>
                     </p>
@@ -311,8 +347,8 @@ function App() {
                 </div>
               ))
             ) : (
-              <div className="col-span-full text-center py-12">
-                <p className="text-gray-500 dark:text-gray-400 text-lg">
+              <div className="col-span-full text-center py-12 bg-white dark:bg-gray-800 rounded-xl shadow-inner">
+                <p className="text-gray-500 dark:text-gray-400 text-lg font-medium">
                   No products found. Try a different search or category.
                 </p>
               </div>
@@ -322,7 +358,7 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 py-12 mt-12 transition-colors duration-300 shadow-inner">
+      <footer className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 py-12 mt-16 transition-colors duration-300 shadow-inner">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <a href="/" className="mb-4 inline-block">
             <Logo />
